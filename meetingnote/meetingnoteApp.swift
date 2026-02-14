@@ -10,11 +10,31 @@ import SwiftData
 
 @main
 struct meetingnoteApp: App {
+    let container: ModelContainer
+
+    init() {
+        do {
+            container = try ModelContainer(for: MeetingNote.self)
+        } catch {
+            // 스키마 변경으로 마이그레이션 실패 시 기존 저장소 삭제 후 재생성
+            let appSupport = FileManager.default
+                .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+                .first
+            if let dir = appSupport,
+               let files = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) {
+                for file in files where file.lastPathComponent.hasPrefix("default.store") {
+                    try? FileManager.default.removeItem(at: file)
+                }
+            }
+            container = try! ModelContainer(for: MeetingNote.self)
+        }
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .preferredColorScheme(.dark) // 다크 모드 강제
+                .preferredColorScheme(.dark)
         }
-        .modelContainer(for: MeetingNote.self)
+        .modelContainer(container)
     }
 }
