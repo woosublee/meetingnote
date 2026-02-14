@@ -20,7 +20,7 @@ struct RecordingView: View {
     var body: some View {
         VStack(spacing: 30) {
             // 녹음 시간 표시
-            Text(formatDuration(audioManager.recordingDuration))
+            Text(audioManager.recordingDuration.formattedDuration())
                 .font(.system(size: 72, weight: .thin, design: .monospaced))
                 .foregroundStyle(.primary)
             
@@ -197,17 +197,6 @@ struct RecordingView: View {
         audioManager.reset()
     }
     
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let hours = Int(duration) / 3600
-        let minutes = Int(duration) / 60 % 60
-        let seconds = Int(duration) % 60
-        
-        if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
-    }
 }
 
 #Preview {

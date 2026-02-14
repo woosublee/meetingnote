@@ -25,6 +25,7 @@ struct NotesListView: View {
 
     @State private var searchText = ""
     var onOpenNote: (MeetingNote) -> Void = { _ in }
+    var onSwitchToMeetings: () -> Void = {}
 
     var filteredNotes: [MeetingNote] {
         if searchText.isEmpty {
@@ -113,7 +114,7 @@ struct NotesListView: View {
                     title: "아직 노트가 없습니다",
                     subtitle: "미팅 탭에서 녹음을 시작하면\n노트가 자동으로 저장됩니다",
                     buttonTitle: "미팅 탭으로 이동"
-                ) {}
+                ) { onSwitchToMeetings() }
                 .padding(.vertical, 60)
             } else if filteredNotes.isEmpty {
                 VStack(spacing: 12) {
@@ -188,7 +189,7 @@ struct NoteCardView: View {
                                 .foregroundColor(.white)
                                 .lineLimit(1)
 
-                            Text(note.createdAt.formatted(date: .abbreviated, time: .shortened))
+                            Text(DateFormatter.appDefault.string(from: note.createdAt))
                                 .font(.system(size: 12))
                                 .foregroundColor(.textSecondary)
                         }
@@ -207,7 +208,7 @@ struct NoteCardView: View {
 
                     HStack(spacing: 14) {
                         if note.duration > 0 {
-                            Label(formatDuration(note.duration), systemImage: "waveform")
+                            Label(note.duration.formattedDuration(), systemImage: "waveform")
                                 .font(.system(size: 11))
                                 .foregroundColor(.textSecondary)
                         }
@@ -219,7 +220,7 @@ struct NoteCardView: View {
                     }
 
                     if !note.transcribedText.isEmpty {
-                        Text(note.transcribedText)
+                        Text(note.transcribedText.strippedMarkdown)
                             .font(.system(size: 13))
                             .foregroundColor(.textTertiary)
                             .lineLimit(2)
@@ -243,16 +244,6 @@ struct NoteCardView: View {
         #endif
     }
 
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let hours = Int(duration) / 3600
-        let minutes = Int(duration) / 60 % 60
-        let seconds = Int(duration) % 60
-        if hours > 0 {
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        } else {
-            return String(format: "%02d:%02d", minutes, seconds)
-        }
-    }
 }
 
 // MARK: - Legacy row (unused, kept for reference)
@@ -270,14 +261,14 @@ struct NoteRowView: View {
                 .lineLimit(2)
 
             HStack {
-                Label(note.createdAt.formatted(date: .abbreviated, time: .shortened), systemImage: "calendar")
+                Label(DateFormatter.appDefault.string(from: note.createdAt), systemImage: "calendar")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
 
                 Spacer()
 
                 if note.duration > 0 {
-                    Label(formatDuration(note.duration), systemImage: "waveform")
+                    Label(note.duration.formattedDuration(), systemImage: "waveform")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
@@ -286,11 +277,6 @@ struct NoteRowView: View {
         .padding(.vertical, 4)
     }
 
-    private func formatDuration(_ duration: TimeInterval) -> String {
-        let minutes = Int(duration) / 60
-        let seconds = Int(duration) % 60
-        return String(format: "%d:%02d", minutes, seconds)
-    }
 }
 
 #Preview {

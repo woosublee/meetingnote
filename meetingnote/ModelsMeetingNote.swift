@@ -34,6 +34,7 @@ final class MeetingNote {
 
     // 커스텀 AI 결과물 목록 (커스텀1, 커스텀2, ...)
     var customResults: [String]
+    var customResultNames: [String]
 
     // 녹음 시간 (초 단위)
     var duration: TimeInterval
@@ -53,7 +54,8 @@ final class MeetingNote {
         processedText: String? = nil,
         duration: TimeInterval = 0,
         tags: [String] = [],
-        customResults: [String] = []
+        customResults: [String] = [],
+        customResultNames: [String] = []
     ) {
         self.id = UUID()
         self.title = title
@@ -66,5 +68,6 @@ final class MeetingNote {
         self.duration = duration
         self.tags = tags
         self.customResults = customResults
+        self.customResultNames = customResultNames
     }
 }
