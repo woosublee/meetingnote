@@ -4,4 +4,40 @@
    <FileRef
       location = "self:">
    </FileRef>
+   <FileRef
+      location = "group:CaretDesignSystem.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Models.swift">
+   </FileRef>
+   <FileRef
+      location = "group:RecordingManager.swift">
+   </FileRef>
+   <FileRef
+      location = "group:CaretComponents.swift">
+   </FileRef>
+   <FileRef
+      location = "group:RecordingView.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MainViews.swift">
+   </FileRef>
+   <FileRef
+      location = "group:CaretApp.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Info.plist">
+   </FileRef>
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:GUIDE.swift">
+   </FileRef>
+   <FileRef
+      location = "group:ManagersSystemAudioCaptureManager.swift">
+   </FileRef>
+   <FileRef
+      location = "group:ManagersMixedAudioRecorderManager.swift">
+   </FileRef>
 </Workspace>

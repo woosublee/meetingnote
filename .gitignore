@@ -1,0 +1,26 @@
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcbkptlist
+*.moved-aside
+*.orig
+
+# DerivedData
+DerivedData/
+Build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Crash logs
+*.crash
+
+# Editor
+.idea/
+*.swp

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Microphone Permission -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>미팅을 녹음하고 실시간으로 전사하기 위해 마이크 접근 권한이 필요합니다.</string>
+    
+    <!-- Speech Recognition Permission -->
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>음성을 텍스트로 변환하기 위해 음성 인식 권한이 필요합니다.</string>
+    
+    <!-- Calendar Permission (Optional) -->
+    <key>NSCalendarsUsageDescription</key>
+    <string>다가오는 일정을 확인하기 위해 캘린더 접근 권한이 필요합니다.</string>
+</dict>
+</plist>

@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct meetingnoteApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark) // 다크 모드 강제
         }
+        .modelContainer(for: MeetingNote.self)
     }
 }
