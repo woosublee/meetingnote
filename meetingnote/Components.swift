@@ -323,26 +323,26 @@ private class MarkdownLayoutManager: NSLayoutManager {
                 let boxRect = NSRect(x: bx, y: by, width: boxSize, height: boxSize)
                 let path = NSBezierPath(roundedRect: boxRect, xRadius: 3, yRadius: 3)
                 if marker == "☑" {
-                    NSColor(calibratedRed: 0.35, green: 0.56, blue: 1.0, alpha: 1).setFill()
+                    NSColor(Color.appPrimary).setFill()
                     path.fill()
                     let check = NSBezierPath()
                     check.move(to: NSPoint(x: bx + 3.5, y: by + boxSize / 2))
                     check.line(to: NSPoint(x: bx + 6, y: by + boxSize - 3.5))
                     check.line(to: NSPoint(x: bx + boxSize - 3, y: by + 3.5))
-                    NSColor.white.setStroke()
+                    NSColor(Color.textPrimary).setStroke()
                     check.lineWidth = 1.8
                     check.lineCapStyle = .round
                     check.lineJoinStyle = .round
                     check.stroke()
                 } else {
-                    NSColor(white: 0.55, alpha: 1).setStroke()
+                    NSColor(Color.appSecondary).setStroke()
                     path.lineWidth = 1.3
                     path.stroke()
                 }
             } else {
                 let attrs: [NSAttributedString.Key: Any] = [
                     .font: markerFont,
-                    .foregroundColor: NSColor.white
+                    .foregroundColor: NSColor(Color.textPrimary)
                 ]
                 let ns = marker as NSString
                 let sz = ns.size(withAttributes: attrs)
@@ -432,8 +432,8 @@ private class MarkdownTextView: NSTextView {
         // 오더리스트: "N. "
         let sns = trimLine as NSString
         var n = 0
-        while n < sns.length && sns.character(at: n) >= 48 && sns.character(at: n) <= 57 { n += 1 }
-        if n > 0 && n + 1 < sns.length && sns.character(at: n) == 46 && sns.character(at: n + 1) == 32 {
+        while n < sns.length && sns.character(at: n) >= "0".utf16.first! && sns.character(at: n) <= "9".utf16.first! { n += 1 }
+        if n > 0 && n + 1 < sns.length && sns.character(at: n) == ".".utf16.first! && sns.character(at: n + 1) == " ".utf16.first! {
             let numStr = String(trimLine.prefix(n))
             let num = (Int(numStr) ?? 0) + 1
             let body = trimLine.dropFirst(n + 2).trimmingCharacters(in: .whitespaces)
@@ -576,10 +576,10 @@ private class MarkdownTextStorage: NSTextStorage {
     private func basePara() -> NSMutableParagraphStyle {
         let p = NSMutableParagraphStyle(); p.lineSpacing = lineSpacing; return p
     }
-    private var textClr:    NSColor { NSColor(white: 0.88, alpha: 1.0) }
-    private var dimClr:     NSColor { NSColor(white: 0.38, alpha: 1.0) }
-    private var headingClr: NSColor { NSColor.white }
-    private var strikeClr:  NSColor { NSColor(white: 0.50, alpha: 1.0) }
+    private var textClr:    NSColor { NSColor(Color.textPrimary) }
+    private var dimClr:     NSColor { NSColor(Color.textTertiary) }
+    private var headingClr: NSColor { NSColor(Color.textPrimary) }
+    private var strikeClr:  NSColor { NSColor(Color.textSecondary) }
     private func bodyFont(_ s: CGFloat? = nil) -> NSFont { NSFont.systemFont(ofSize: s ?? fontSize) }
     private func boldFont(_ s: CGFloat? = nil) -> NSFont { NSFont.systemFont(ofSize: s ?? fontSize, weight: .bold) }
     private func monoFont()                    -> NSFont { NSFont.monospacedSystemFont(ofSize: max(fontSize - 1, 12), weight: .regular) }
@@ -695,10 +695,10 @@ private class MarkdownTextStorage: NSTextStorage {
             // 순서 있는 목록: N. text
             let tns = lineContent as NSString
             var n = 0
-            while n < tns.length && tns.character(at: n) >= 48 && tns.character(at: n) <= 57 { n += 1 }
+            while n < tns.length && tns.character(at: n) >= "0".utf16.first! && tns.character(at: n) <= "9".utf16.first! { n += 1 }
             if n > 0 && n + 1 < tns.length
-               && tns.character(at: n) == 46
-               && tns.character(at: n + 1) == 32 {
+               && tns.character(at: n) == ".".utf16.first!
+               && tns.character(at: n + 1) == " ".utf16.first! {
                 let numStr = String(lineContent.prefix(n))
                 backing.addAttributes([
                     .paragraphStyle: listParaStyle(),
@@ -714,7 +714,7 @@ private class MarkdownTextStorage: NSTextStorage {
         Self.codeRE.enumerateMatches(in: str, range: full) { [weak self] m, _, _ in
             guard let self, let m, m.range.length >= 2 else { return }
             let loc = m.range.location, len = m.range.length
-            self.backing.addAttributes([.font: self.monoFont(), .backgroundColor: NSColor(white: 0.15, alpha: 1.0)], range: m.range)
+            self.backing.addAttributes([.font: self.monoFont(), .backgroundColor: NSColor(Color.cardBg)], range: m.range)
             self.backing.addAttribute(.foregroundColor, value: self.dimClr, range: NSRange(location: loc, length: 1))
             self.backing.addAttribute(.foregroundColor, value: self.dimClr, range: NSRange(location: loc + len - 1, length: 1))
         }
